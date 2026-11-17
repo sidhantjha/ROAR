@@ -22,6 +22,9 @@
 5. A/B test clean three-lap runs, sector times, path errors and crashes versus 417.30 s; keep a rollback.
 6. Revisit 65+ braking test after track/test-controller geometry diagnosis. Expand model and tune line/controller, then perform packaging/rules audit.
 
+## Rapid implementation path — requested 2026-11-16
+The user prefers an **initial integrated speed-planner experiment now**, without waiting for full lateral/combined-grip calibration. Keep the 417.30 s completed baseline protected. Build an isolated, config-toggled velocity planner that reads the *local* measured acceleration and braking bins, retains existing 34 m/s² global and 32 m/s² local corner limits as **uncalibrated planning assumptions**, and conservatively retains the old 4 m/s² braking assumption outside measured coverage (do not invent 65+ braking data). Include optional *provisional* friction-circle coupling; test both baseline and planner using identical line/config and three-lap timing, and evaluate per-sector behavior, actual braking, path error and collisions. An earlier naive fixed 3 m/s² acceleration forward-pass regressed race time; measured model needs A/B validation. Only after the first planner evaluation should we focus on targeted lateral/combined-grip experiments and 65+ m/s braking extension.
+
 ## Engineering principles and milestone rules
 - A phase is COMPLETED only when code is run and validated, not merely generated or syntax-checked.
 - A test aborted before brake application supplies *no* braking coefficient.
