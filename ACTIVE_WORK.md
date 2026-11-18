@@ -1,4 +1,14 @@
-# ROAR — active workstream: high-speed longitudinal characterization
+# ROAR — active workstream: section-tuned Pure Pursuit
+
+## Current active task — centerline section-tuned Pure Pursuit (2026-11-18)
+**User's chosen development sequence:** protect the 417.30 s controller (20% original racing line), create a manual copy as `src/pursuer_tuned/{__init__.py,config.py,controller.py}` based on user-uploaded working `src/pursuer_racing/controller.py`. Keep **exact Pure Pursuit, path-segment projection, adaptive lookahead, curvature speed cap, backward braking and PI throttle**; change **only** `self.waypoints = list(waypoints)` instead of optimized-line loader and delete the unused fixed-3m/s² forward profile, racing-line fields and unimplemented measured-planner/combined-grip flags. Config must contain only referenced parameters. Do not modify source files or create downloadable code on behalf of the user; provide full inline copy/paste code with clear explanation. New centerline controller is **not** expected to reproduce 417.30 s, since that run used 20% original min-curvature blend.
+
+**Initial config for A/B isolation:** use original proven global lateral target 34 m/s², braking assumption 4m/s², existing sections WP470–550 and WP1880–2020 at 32m/s², while keeping other analytically identified corner windows at global 34 (not newly slowing all corners). Already identified eight candidate tuning windows from user-run offline track map; start by adjusting one section at a time after a centerline baseline. Record first collision/section, entry and exit speed, path error, throttle/brake and sector elapsed time. A one-lap pass is an intermediate gate; repeat full 3 laps to qualify a faster build. Optimize braking/accel once failure modes and speed bottlenecks are identified using existing 13 acceleration/22 braking measured bins; true corner and combined-grip limits not yet calibrated. Then introduce selected local racing-line offsets at demonstrated geometry-limited corners and retune section speeds. Use existing raw track geometry export `tools/mincurv/data/monza_track.npz` (2,775 centerline WPs).
+
+**Next concrete action:** user creates `src/pursuer_tuned` in VS Code from supplied inline copy/paste, checks the two import references in `submission.py` (exact file not inspected) and runs syntax check then simulator. Preserve protected original and restore imports after tests.
+
+**Historical work below:** prior 65 m/s braking tests and their unresolved 3 m tracking abort remain evidence but are not the immediate task.
+
 
 **Updated:** 2026-11-16 after last screenshot/terminal outcome. **Current phase:** ROADMAP phase 3 (IN PROGRESS, high-speed extension BLOCKED).
 
@@ -58,3 +68,4 @@ Important local files:
 - Full current local source and latest script implementations are **not present in GitHub remote** and could not be audited here. User must share files or use a connected local workflow before exact fixes can be specified safely.
 - Whether Monza offers a suitable clear/straight stretch for target 65–90 m/s testing is unverified.
 - Actual final submission rule interpretation and currently effective `pursuer_racing/config.py` require inspection.
+
